@@ -15,8 +15,17 @@ class ViewController: UIViewController {
     // how many incorrect guesses are allowed per round:
     let incorrectMovesAllowed = 7
     
-    var totalWins = 0
-    var totalLosses = 0
+    var totalWins = 0 {
+        didSet {
+            newRound()
+        }
+    }
+    
+    var totalLosses = 0 {
+        didSet {
+            newRound()
+        }
+    }
 
     // the game value:
     var currentGame: Game!
@@ -64,8 +73,18 @@ class ViewController: UIViewController {
         let letterString = sender.title(for: .normal)! // get the title of the button
         let letter = Character(letterString.lowercased()) // make it lowercased
         currentGame.playerGuessed(letter: letter)
-        updateUI()
-        
+        // updateUI()
+        updateGameState()
+    }
+    
+    func updateGameState() {
+        if currentGame.incorrectMovesRemaining == 0 {
+            totalLosses += 1
+        } else if currentGame.word == currentGame.formattedWord {
+            totalWins += 1
+        } else {
+            updateUI()
+        }
     }
     
     
