@@ -44,6 +44,13 @@ class ViewController: UIViewController {
     }
     
     func updateUI() {
+        var letters = [String]()
+        for letter in currentGame.formattedWord {
+            letters.append(String(letter))
+        }
+        let wordWithSpacing = letters.joined(separator: " ")
+        
+        correctWordLabel.text = wordWithSpacing
         scoreLabel.text = "Wins: \(totalWins), losses: \(totalLosses)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
         
@@ -56,7 +63,8 @@ class ViewController: UIViewController {
         
         let letterString = sender.title(for: .normal)! // get the title of the button
         let letter = Character(letterString.lowercased()) // make it lowercased
-        
+        currentGame.playerGuessed(letter: letter)
+        updateUI()
         
     }
     
