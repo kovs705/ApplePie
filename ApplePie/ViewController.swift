@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var scoreLabel: UILabel!
     
-    @IBOutlet var letterButton: [UIButton]!
+    @IBOutlet var letterButtons: [UIButton]!
     
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
@@ -47,9 +47,21 @@ class ViewController: UIViewController {
     // MARK: - Functions
     
     func newRound() {
-        let newWord = listOfWords.removeFirst() // removes and return the first element of the collection
-        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
-        updateUI()
+        if !listOfWords.isEmpty {
+            let newWord = listOfWords.removeFirst() // delete first/next word in array of words
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
+            enableLetterButtons(true) // while there are words in the array, buttons will be enabled
+            updateUI()
+        } else {
+            enableLetterButtons(false) // disable buttons to prevent from crashing
+        }
+    }
+    
+    func enableLetterButtons(_ enable: Bool) {
+        // enable or disable the collection of buttons by looping through them
+        for button in letterButtons {
+            button.isEnabled = enable
+        }
     }
     
     func updateUI() {
