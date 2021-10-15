@@ -16,8 +16,11 @@ class ViewController: UIViewController {
     let incorrectMovesAllowed = 7
     
     var totalWins = 0
-    var totalLoses = 0
+    var totalLosses = 0
 
+    // the game value:
+    var currentGame: Game!
+    
     // MARK: - Outlets:
     @IBOutlet weak var treeImageView: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
@@ -29,19 +32,31 @@ class ViewController: UIViewController {
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        newRound()
     }
     
     // MARK: - Functions
     
+    func newRound() {
+        let newWord = listOfWords.removeFirst() // removes and return the first element of the collection
+        currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
+        updateUI()
+    }
     
+    func updateUI() {
+        scoreLabel.text = "Wins: \(totalWins), losses: \(totalLosses)"
+        treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
+        
+    }
     
     @IBAction func buttonTapped(_ sender: UIButton) {
-        // «a player can't select a letter more than once in the same round»
+        // a player can't select a letter more than once in the same round
         sender.isEnabled = false
-        let letterString = sender.title(for: .normal)!
-        let letter = Character(letterString.lowercased())
-        // continue...
+        // read the button's title, and determine if that letter is in the word the player is trying to guess:
+        
+        let letterString = sender.title(for: .normal)! // get the title of the button
+        let letter = Character(letterString.lowercased()) // make it lowercased
+        
         
     }
     
