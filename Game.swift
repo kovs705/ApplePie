@@ -11,6 +11,7 @@ struct Game {
     var word: String
     var incorrectMovesRemaining: Int
     var guessedLetters: [Character]
+    var score: Int
     
     var formattedWord: String {
         var guessedWord = ""
@@ -29,6 +30,7 @@ struct Game {
         guessedLetters.append(letter)
         if !word.contains(letter) {
             incorrectMovesRemaining -= 1
+            score -= 1
         }
     }
 }

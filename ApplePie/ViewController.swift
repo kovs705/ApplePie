@@ -15,6 +15,12 @@ class ViewController: UIViewController {
     // how many incorrect guesses are allowed per round:
     let incorrectMovesAllowed = 7
     
+    var score = 0 {
+        didSet {
+            newRound()
+        }
+    }
+    
     var totalWins = 0 {
         didSet {
             newRound()
@@ -34,6 +40,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var treeImageView: UIImageView!
     @IBOutlet weak var correctWordLabel: UILabel!
     
+    @IBOutlet weak var scoreBar: UILabel!
+    
     @IBOutlet weak var scoreLabel: UILabel!
     
     @IBOutlet var letterButtons: [UIButton]!
@@ -49,7 +57,7 @@ class ViewController: UIViewController {
     func newRound() {
         if !listOfWords.isEmpty {
             let newWord = listOfWords.removeFirst() // delete first/next word in array of words
-            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [])
+            currentGame = Game(word: newWord, incorrectMovesRemaining: incorrectMovesAllowed, guessedLetters: [], score: score)
             enableLetterButtons(true) // while there are words in the array, buttons will be enabled
             updateUI()
         } else {
@@ -64,6 +72,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // MARK: - updating the game
     func updateUI() {
         var letters = [String]()
         for letter in currentGame.formattedWord {
@@ -72,11 +81,17 @@ class ViewController: UIViewController {
         let wordWithSpacing = letters.joined(separator: " ")
         
         correctWordLabel.text = wordWithSpacing
+        if score == 0 {
+            scoreBar.text = "Your score is zero"
+        } else {
+            scoreBar.text = "Your score is: \(score)"
+        }
+        
         scoreLabel.text = "Wins: \(totalWins), losses: \(totalLosses)"
         treeImageView.image = UIImage(named: "Tree \(currentGame.incorrectMovesRemaining)")
         
     }
-    
+    // MARK: - Button
     @IBAction func buttonTapped(_ sender: UIButton) {
         // a player can't select a letter more than once in the same round
         sender.isEnabled = false
@@ -88,12 +103,14 @@ class ViewController: UIViewController {
         // updateUI()
         updateGameState()
     }
-    
+    // MARK: - Update the game
     func updateGameState() {
         if currentGame.incorrectMovesRemaining == 0 {
             totalLosses += 1
+            score -= 10
         } else if currentGame.word == currentGame.formattedWord {
             totalWins += 1
+            score += 10
         } else {
             updateUI()
         }

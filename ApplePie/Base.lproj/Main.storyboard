@@ -270,6 +270,7 @@
                     <connections>
                         <outlet property="correctWordLabel" destination="sMg-Wc-qfU" id="jN5-mC-Hfw"/>
                         <outlet property="letterButton" destination="Mdk-GX-a7j" id="7uX-mG-LvS"/>
+                        <outlet property="scoreBar" destination="dDn-aE-DlD" id="8nw-uf-spt"/>
                         <outlet property="scoreLabel" destination="dDn-aE-DlD" id="4gk-nO-LYF"/>
                         <outlet property="treeImageView" destination="2Si-DA-cHA" id="pp9-lU-xdM"/>
                         <outletCollection property="letterButton" destination="YYf-EL-b9e" collectionClass="NSMutableArray" id="9A7-gl-Eba"/>
